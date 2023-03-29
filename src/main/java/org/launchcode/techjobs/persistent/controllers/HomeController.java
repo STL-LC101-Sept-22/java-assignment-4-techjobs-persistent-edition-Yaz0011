@@ -31,9 +31,9 @@ public class HomeController {
 
     @RequestMapping("")
     public String index(Model model) {
-        //add job list element to the homepage
-//        Iterable <Job> jobs = jobRepository.findAll();
-//        model.addAttribute("jobs", jobs);
+        //add job list element to the homepage. no directions given
+        Iterable <Job> jobs = jobRepository.findAll();
+        model.addAttribute("jobs", jobs);
 
 
         model.addAttribute("title", "My Jobs");
@@ -80,7 +80,15 @@ public class HomeController {
 
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
+        //added this in order to display the job detail on the homepage. no directions given.
 
+        Optional<Job> result = jobRepository.findById(jobId);
+        if (result.isEmpty()){
+            model.addAttribute("title", "Invalid Job ID:" + jobId);
+        } else {
+            Job job = result.get();
+            model.addAttribute("job", job);
+        }
         return "view";
     }
 
